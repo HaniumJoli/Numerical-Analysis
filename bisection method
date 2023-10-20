@@ -1,0 +1,45 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+double fx(double a,double b,double c,double x)
+{
+    double ans=a*x*x+b*x+c;
+    return ans;
+}
+double false_position(double a,double b,double c,double x1,double x2,int n,double prec)
+{
+    if(n==0) 
+    {
+        cout<<"did  not converge\n";
+        return 1e9;
+    }
+    double fx1=fx(a,b,c,x1);
+    double fx2=fx(a,b,c,x2);
+    if(fx1-fx2==0)
+    {
+        cout<<"dision by 0"<<endl;
+        return 1e9;
+    }
+    double x3=(x1*fx2-x2*fx1)/(fx2-fx1);
+    if(abs(x3-x2)<prec)
+    {
+        cout<<"converged after "<<n<<"th iteration.\n";
+        return x3;
+    }
+    return false_position(a,b,c,x2,x3,n-1,prec);
+}
+int main()
+{
+    double a=0,b=0,c=0;
+    char s[100];
+    cout<<"enter the equation in the form of ax^2+bx+c=0\n";
+    cin>>s;
+    sscanf(s,"%lfx^2%lfx%lf=0",&a,&b,&c);
+    //cout<<a<<' '<<b<<' '<<c<<endl;
+    double x0=2,x1=5;
+    //double x1=2,x2=5;
+    //double ans=secant(a,b,c,x1,x2,100,.0001);
+    double ans=false_position(a,b,c,x0,100,.0001);
+    if(ans!=1e9) cout<<ans;
+    return 0;
+}
